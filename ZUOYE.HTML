@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>demo</title>
+        <style>
+            #s1{
+                width:180px;
+                height: 45px;
+            }
+            #sousuo{
+                width: 90px;
+                height: 35px;
+            }
+            
+            input::-webkit-input-placeholder {
+                font-size:15px;
+            }
+            #small{
+                width: 280px;
+                height: 50px;
+            }
+            #bigest{
+                width:280px;
+                height: 108px;
+            }
+            #big{
+                width:250px;
+                height: 108px;
+                overflow: hidden;
+                float: left;
+            }
+            #s3{
+                margin-top: 0px;
+                margin-bottom: 0px;
+            }
+            .a{
+                background-color:lavender;
+                float: left;
+                margin-right: 7px;
+                margin-top: 5px;
+            }
+            #delete{
+                background-color:lavender;
+                border: none;
+                float: left;
+                width: 30px;
+                height: 30px;
+                margin-top:78px; 
+                opacity: 50;
+                color:white;
+                font-size: 20px;
+            }
+        </style>
+    </head>
+    <body>
+
+        <form>
+            <div id="small">
+                <input type="search" name="searchiing" id="s1" placeholder="请输入想查找的商品" autofocus/>
+                <input type="button" value="搜索" id="sousuo"  onclick="xz()" />
+            </div>
+            
+        </form>
+        <p id="s3">最近搜索</p>
+        <div id="bigest">
+            <div id='big'></div>
+            <button id="delete" onclick="clearText()">X</button>
+        </div>
+        
+        <script>
+            function xz(){
+               var smalldiv=document.createElement("div");
+               var big=document.getElementById("big");
+               var text=document.getElementById("s1").value;
+
+               var time = new Date().getTime();
+               localStorage.setItem(time,text);
+               var get=localStorage.getItem(time);
+               var inner=document.createTextNode(get);        
+            
+               big.innerHTML+="<div class='a'></div>";
+               var ab=document.getElementsByClassName("a")
+               for(var i=0;i<ab.length;i++){
+                   ab[i].appendChild(inner);
+               }
+            }
+            function clearText(){
+                var big=document.getElementById("big");
+                localStorage.clear();
+                big.innerHTML="";
+            }
+            window.onload=function(){
+               var big=document.getElementById("big");
+               var text=document.getElementById("s1").value;
+               for(var j=0;j<localStorage.length;j++){
+                    var answer=localStorage.key(j);
+                    var get=localStorage.getItem(answer);
+                    var inner=document.createTextNode(get);
+                    big.innerHTML+="<div class='a'></div>";
+                    var ab=document.getElementsByClassName("a")
+                   for(var i=0;i<ab.length;i++){
+                        ab[i].appendChild(inner);
+                    }
+               }
+            }
+           
+        </script>
+    </body>
+</html>
