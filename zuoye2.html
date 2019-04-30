@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <title>刮刮卡</title>
+    </head>
+    <body>
+        <canvas id="canvas" width="400px" height="250px"></canvas>
+    </body>
+    <script>
+        var canvas=document.getElementById('canvas');
+        var context=canvas.getContext('2d');
+        
+        init();
+        function init(){
+            context.fillStyle='#ddd';
+            context.fillRect(0,0,400,250);
+            canvas.style.background = 'url("https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1556537488&di=cd44d7d4943ff9a6a080568d38717485&src=http://n.sinaimg.cn/sports/transform/489/w640h649/20180329/z5lC-fyssmmc2133168.jpg") no-repeat center';
+            canvas.style.backgroundSize="100% 100%";
+            context.lineWidth=35;
+        }
+        canvas.addEventListener('mousedown',mouseDown,false);
+        canvas.addEventListener('mousemove',mouseMove,false);
+        canvas.addEventListener('mouseup',mouseUp,false);
+        var isDrawing;
+        var startX=0;
+        var startY=0;
+        function mouseDown(e)
+        {
+            isDrawing=true;
+            startX=e.layerX;
+            startY=e.layerY;
+
+        }
+        function mouseMove(e)
+        {
+            if(isDrawing){
+                var x=e.layerX;
+                var y=e.layerY;
+                context.globalCompositeOperation="destination-out";
+                context.beginPath();
+                context.moveTo(startX,startY);
+                context.lineTo(x,y);
+                context.closePath();
+                context.stroke();
+                startX=x;
+                startY=y;
+            }
+        }
+        function mouseUp(e)
+        {
+            isDrawing=false;
+            var data=context.getImageData(0,0,400,250).data;
+            console.log('图片像素信息',data);
+            var length=data.length;
+            var k=0;
+            for(var i=0;i<length-3;i+=4){
+                if(data[i]==0&&data[i+1]==0&&data[i+2]==0&&data[i+3]==0){
+                    k++;
+                }
+            }
+            if(k>400*250*0.15){
+                context.fillStyle='blue';
+                context.fillRect(0,0,400,250);
+            }
+
+
+        }
+
+    </script>
+</html>
